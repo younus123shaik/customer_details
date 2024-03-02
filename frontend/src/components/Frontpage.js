@@ -8,7 +8,7 @@ const Frontpage = () => {
     <h1 class="w3-jumbo w3-animate-top h1">Welcome To Zithara Assesment</h1>
     <hr class="w3-border-grey" style={{width:'40%'}}/>
     <p class="w3-large w3-center p">Customer Details</p>
-    <button className='wel-btn' onClick={()=>{nav('/')}}>Proceed</button>
+    <button className='wel-btn' onClick={()=>{nav('/customer')}}>Proceed</button>
   </div>
   )
 }

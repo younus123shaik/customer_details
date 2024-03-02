@@ -11,8 +11,9 @@ const Capilize = (string) => {
 };
 
 app.get("/customers", async (req, res) => {
+  const { data } = req.query;
   try {
-    const query = `SELECT * FROM customerdetails ORDER BY sno`;
+    const query = `SELECT * FROM customerdetails ORDER BY ${data}`;
     const { rows } = await db.query(query);
     const { rowCount } = await db.query("select * from customerdetails");
     store = rows;
@@ -46,7 +47,6 @@ app.post("/customers/create", async (req, res) => {
 
 app.delete("/customers/delete", async (req, res) => {
   const { sno } = req.query;
-  console.log(sno);
   const query = `DELETE FROM public.customerdetails WHERE sno=$1`;
   await db
     .query(query, [sno])
@@ -80,7 +80,7 @@ app.put("/customers/update", async (req, res) => {
 
 app.get("/customers/time", async (req, res) => {
   const { order } = req.query;
-  console.log(order);
+
   const query = `SELECT *
     FROM customerdetails
     ORDER BY TO_DATE(SUBSTRING(created_at, 1, 10), 'DD-MM-YYYY') ${order} `;
@@ -97,7 +97,6 @@ app.get("/customers/time", async (req, res) => {
 
 app.get("/customers/searchs", async (req, res) => {
   var { search } = req.query;
-  console.log(search);
   if (!search) {
     res.json(store);
     return;

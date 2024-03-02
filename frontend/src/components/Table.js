@@ -33,10 +33,9 @@ const Table = () => {
   useLayoutEffect(() => {
     const CustomerFetch = async () => {
       await axios
-        .get(`http://localhost:5000/customers`)
+        .get(`http://localhost:5000/customers?data=sno`)
         .then((res) => {
           setCustomerde(res.data.rows);
-          console.log(res.data);
           setTotal(res.data.rowCount);
         })
         .catch((err) => {
@@ -49,7 +48,6 @@ const Table = () => {
   useEffect(() => {
     pre = (page - 1) * limit;
     setCustomerdetail(customerde.slice(pre, pre + limit));
-    console.log(customerdetail);
   }, [page, customerde]);
 
   const handleDelete = async (sno) => {
@@ -64,7 +62,6 @@ const Table = () => {
         .then((res) => {
           setCustomerde(res.data);
           setPage(1);
-          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -108,7 +105,7 @@ const Table = () => {
       [name]: value,
     }));
   };
-  console.log(customer);
+  
   const submitEdit = async () => {
     await axios.put("http://localhost:5000/customers/update", customer);
     setChange(!change);
@@ -135,6 +132,16 @@ const Table = () => {
 
     return dateTimeString;
   }
+
+ const orderCustomer= async ()=>{
+  await axios.get("http://localhost:5000/customers?data=customer_name")
+  .then((res)=>{
+    setCustomerde(res.data.rows)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+ }
 
   return (
     <div className="wapper">
@@ -215,7 +222,7 @@ const Table = () => {
               >
                 Sno <BsArrowDownUp />
               </th>
-              <th className="medium">Customer_name</th>
+              <th style={{cursor:"pointer"}} className="medium" onClick={orderCustomer}>Customer_name <BsArrowDownUp /></th>
               <th>Age</th>
               <th style={{ width: "7%" }}>Phone</th>
               <th style={{ width: "7%" }}>Location</th>
@@ -230,7 +237,7 @@ const Table = () => {
               >
                 <span onClick={handleOrder} style={{ cursor: "pointer" }}>
                   Created_at <BsArrowDownUp />
-                  {order ? " (ASC)" : " (DESC)"}
+                  {order ? " (DESC)" : " (ASC)"}
                 </span>
                 <div className="flexx">
                   <span style={{ marginLeft: "5px" }}>Date</span>
@@ -244,6 +251,7 @@ const Table = () => {
           <tbody>
             {customerdetail && customerdetail.length > 0 ? (
               customerdetail.map((cust, ind) => (
+                
                 <tr key={ind}>
                   {ind === index ? (edit = false) : () => (edit = true)}
 
@@ -281,6 +289,7 @@ const Table = () => {
                         value={customer.phone}
                         onChange={handleEditChange}
                         name="phone"
+                        max={999999}
                       />
                     )}
                   </td>
@@ -311,6 +320,7 @@ const Table = () => {
                         value={customer.about}
                         onChange={handleEditChange}
                         name="about"
+                        className="inputabout"
                       />
                     )}
                   </td>

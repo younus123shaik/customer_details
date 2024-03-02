@@ -109,6 +109,13 @@ table {
   border: 1px solid gray;
   padding: 10px;
 }
+input{
+  border-radius: 10px;
+  border: 1px solid black;
+}
+.inputabout{
+  width: 90%;
+}
 input:focus{
   outline: none;
 }
