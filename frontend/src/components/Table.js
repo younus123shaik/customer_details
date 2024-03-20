@@ -32,15 +32,19 @@ const Table = () => {
   const [showModal, setShowModal] = useState(false);
   useLayoutEffect(() => {
     const CustomerFetch = async () => {
-      await axios
-        .get(`http://localhost:5000/customers?data=sno`)
-        .then((res) => {
-          setCustomerde(res.data.rows);
-          setTotal(res.data.rowCount);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        await axios
+          .get(`http://localhost:5000/customers?data=sno`)
+          .then((res) => {
+            setCustomerde(res.data.rows);
+            setTotal(res.data.rowCount);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     };
     CustomerFetch();
   }, [change]);
@@ -105,7 +109,7 @@ const Table = () => {
       [name]: value,
     }));
   };
-  
+
   const submitEdit = async () => {
     await axios.put("http://localhost:5000/customers/update", customer);
     setChange(!change);
@@ -133,15 +137,16 @@ const Table = () => {
     return dateTimeString;
   }
 
- const orderCustomer= async ()=>{
-  await axios.get("http://localhost:5000/customers?data=customer_name")
-  .then((res)=>{
-    setCustomerde(res.data.rows)
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
- }
+  const orderCustomer = async () => {
+    await axios
+      .get("http://localhost:5000/customers?data=customer_name")
+      .then((res) => {
+        setCustomerde(res.data.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="wapper">
@@ -222,7 +227,13 @@ const Table = () => {
               >
                 Sno <BsArrowDownUp />
               </th>
-              <th style={{cursor:"pointer"}} className="medium" onClick={orderCustomer}>Customer_name <BsArrowDownUp /></th>
+              <th
+                style={{ cursor: "pointer" }}
+                className="medium"
+                onClick={orderCustomer}
+              >
+                Customer_name <BsArrowDownUp />
+              </th>
               <th>Age</th>
               <th style={{ width: "7%" }}>Phone</th>
               <th style={{ width: "7%" }}>Location</th>
@@ -251,7 +262,6 @@ const Table = () => {
           <tbody>
             {customerdetail && customerdetail.length > 0 ? (
               customerdetail.map((cust, ind) => (
-                
                 <tr key={ind}>
                   {ind === index ? (edit = false) : () => (edit = true)}
 

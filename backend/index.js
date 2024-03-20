@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const envv = require("dotenv");
+envv.config();
 var store = {};
 app.use(express.json());
 app.use(cors());
@@ -113,7 +115,7 @@ app.get("/customers/searchs", async (req, res) => {
       res.json(err);
     });
 });
-
-app.listen(5000, () => {
-  console.log("backend connected");
+PORT = process.env.REACT_APP_SERVER_PORT ;
+app.listen(PORT, () => {
+  console.log("Connected To Backend At Port: " + PORT);
 });
